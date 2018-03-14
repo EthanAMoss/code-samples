@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Form Test{% endblock %}</title>
+
+{% import 'macros.jinja2.html' as macros %}
+
+{# Set the class for the body tag #}
+{% set body_class = request.endpoint %}
+
+{# Add a class if we are dev mode #}
+{% set body_class = body_class ~ " developer_mode" if config.DEVELOPER_MODE else body_class %}
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/needit_quick.css') }}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        {% block extra_css %}
+        {% endblock %}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body class="{{body_class}}">
+
+    {% block body %}
+
+        <div class="container main_body">
+
+        {% block main_body %}
+            {{ macros.render_flash() }}
+        {% endblock %}
+        </div> <!-- /.container.main_body -->
+
+    {% endblock %}
+
+
+        <!-- Javascript -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/date.js') }}"></script>
+    {% block extra_js %}
+    {% endblock %}
+    </body>
+</html>
+

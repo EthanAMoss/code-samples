@@ -1,0 +1,131 @@
+{% macro render_field(field, class='', placeholder='', disabled=False) %}
+
+{% if field.type == "HiddenField" %}
+    {{ field }}
+{% elif field.type == "SubmitField" %}
+    <input type="submit" name="{{field.name}}" class="{{class}}" value="{{placeholder}}"/>
+{% elif field.type == "CSRFTokenField" %}
+    {{ field(class_="form-control", placeholder=placeholder) }}
+{% elif field.type == "BooleanField" %}
+    <label class="control-label" for="{{ field.id }}">{{ field.label }}</label> {{ field() }}
+{% else %}
+<div class="form-group gfu-form-row {{ "has-error" if field.errors else ""}} ">
+    <label class="control-label font-weight-bold" for="{{ field.id }}"> {{ field.label }}</label>
+    <div class="col-md-4 col-lg-3">
+
+        {% if 'percentage' in class %}
+            <div class="input-group">
+        {% endif %}
+        {% if field.type == "BooleanField" %}
+            {% if disabled %}
+                {{ field(class_=class, disabled=True) }}
+            {% else %}
+                {{ field(class_=class) }}
+            {% endif %}
+        {% elif field.type == "RadioField" %}
+            {% for i in field %}
+                <div class="row">
+                <label>
+                    {{i}}
+                    {{i.label}}
+                </label>
+                </div>
+            {% endfor %}
+        {% elif field.type == "SelectMultipleField" %}
+            {# Specify a maximum height for a multiple-select field list. #}
+            {% set SELECT_MULTIPLE_FIELD_LENGTH = 20 %}
+            {{ field(size=field.choices|count if field.choices|count <= SELECT_MULTIPLE_FIELD_LENGTH else
+                SELECT_MULTIPLE_FIELD_LENGTH ) }}
+        {% else %}
+            {{ field(class_="form-control", placeholder=placeholder) }}
+        {% endif %}
+        {% if 'percentage' in class %}
+            <span class="input-group-addon">%</span>
+            </div>
+        {% endif %}
+        {% for error in field.errors %}
+            {% if field.type == "RadioField" %}
+                <span class="help-block text-danger">{{ error }}</span>
+            {% else %}
+                <span class="help-inline text-danger">{{ error }}</span>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div> <!-- /.form-group.gfu-form-row -->
+{% endif %}
+
+{% endmacro %}
+
+
+
+{% macro render_form_button(path, text, class='btn', value="none") %}
+
+<form action="{{path}}" method="post" class="gfu-form-button">
+    <button type="submit" class="{{class}}" name="action" value="{{value}}">{{text}}</button>
+</form>
+
+{% endmacro %}
+
+{% macro render_link_button(path, text, class='btn btn-default') %}
+<a class="{{class}}" href="{{path}}">{{text}}</a>
+{% endmacro %}
+
+{% macro render_flash() %}
+
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        {% set class_types = {'error': 'danger', 'message': 'info'} %}
+        {% if category in class_types %}
+            {% set category = class_types[category] %}
+        {% endif %}
+        <div class="alert alert-{{category}}">
+            <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+{% endmacro %}
+
+
+{# Build search pager #}
+{% macro render_pager(pager, action, query_string) %}
+<ul class="pagination">
+
+    {# Previous Page Link #}
+    {% if pager.has_prev %}
+        {% set prev = pager.prev_num %}
+        <li class="previous"><a href="{{ url_for(action, page = prev) }}?{{query_string}}"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
+    {% else %}
+        <li class="previous disabled"><a href="#"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
+    {% endif %}
+
+    {# Main page links #}
+    {% for page in pager.iter_pages() %}
+        {% if page %}
+            {% set class = "active" if page == pager.page else '' %}
+            <li class="{{class}}"> <a href="{{ url_for(action, page = page) }}?{{query_string}}">{{ page }}</a></li>
+        {% else %}
+            <li><span><span class="glyphicon glyphicon-option-horizontal"></span></span></li>
+        {% endif %}
+    {% endfor %}
+
+    {# Previous Page Link #}
+    {% if pager.has_next %}
+        {% set next = pager.next_num %}
+        <li class="next"><a href="{{ url_for(action, page = next) }}?{{query_string}}"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
+    {% else %}
+        <li class="next disabled"><a href="#"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
+    {% endif %}
+
+
+</ul>
+{% endmacro %}
+
+{#
+    vi: ft=htmljinja
+ #}
+

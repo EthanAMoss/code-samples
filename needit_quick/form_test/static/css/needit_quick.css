@@ -1,0 +1,19 @@
+body { padding-top: 70px; }
+
+@media (min-width: 0px){
+    .navbar-center{
+        float:none;
+        margin: 0 auto;
+        display: table;
+        table-layout: fixed;
+    }
+}
+.navbar-nav .dropdown-menu {
+  position: absolute;
+}
+
+.sticky-top { padding-top: 0px; }
+
+.map-result { padding-left: 20px }
+
+.btn-needit { margin-bottom: 10px }
