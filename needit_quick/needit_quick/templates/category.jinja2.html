@@ -1,0 +1,55 @@
+{% extends 'base.jinja2.html' %}
+{% import 'macros.jinja2.html' as macros %}
+
+{% block title %} {{ category }} {% endblock %}
+
+{% block back_button %} <button type="button" class="btn btn-light" onclick="window.history.back()"><span class="fa fa-arrow-left"></span></button> {% endblock %}
+
+{% block main_body %}
+
+    {{ super() }}
+    
+    <form role="form" action="{{url_for('home_page')}}" method="POST" name="search_form" class="form-horizontal">
+        <div class="container container-fluid">
+            {{ search_form.csrf_token }}
+            <div class="form-group row justify-content-center {{ "has-danger" if search_form.search_text.errors else ""}}">
+                <div class="col-auto">
+                    <div class="input-group">
+                        {{ search_form.search_text(placeholder="Search Products") }}
+                        <span class="input-group-btn">
+                            <input class="btn btn-light" type="submit" value="Search">                        
+                        </span>
+                    </div>
+                    {% for error in search_form.search_text.errors %}
+                    <span class="help-inline text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="col-auto">
+                    <div class="input-group">
+                        {{ search_form.search_radius.label }}<span></span>{{ search_form.search_radius(size=3) }}<span></span>miles
+                    </div>
+                    {% for error in search_form.search_radius.errors %}
+                    <span class="help-inline text-danger">{{ error }}</span>
+                    {% endfor %}     
+                </div>       
+            </div>
+        </div>
+    </form>
+
+    <div class="container container-fluid">
+        <hr />
+        <div class="row justify-content-center" style="margin-bottom:10px;"><h6>Popular Products in {{ category }}</h6></div>
+        {% for item in items %}
+        {% if loop.index0 % 2 == 0 or loop.index0 == 0 %}
+        <div class="row">
+        {% endif %}
+            <div class="col-6"><a class="btn btn-light btn-block btn-lg btn-needit text-center" href="{{ url_for('search_results', item=item, radius=3.0) }}">{{ item }}</a></div>
+        {% if loop.index0 % 2 == 1 or loop.index0 == items|length - 1 %}
+        </div>
+        {% endif %}
+        {% endfor %}    
+    </div>
+
+{% endblock %}

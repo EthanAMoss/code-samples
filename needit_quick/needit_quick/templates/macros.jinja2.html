@@ -6,12 +6,10 @@
     <input type="submit" name="{{field.name}}" class="{{class}}" value="{{placeholder}}"/>
 {% elif field.type == "CSRFTokenField" %}
     {{ field(class_="form-control", placeholder=placeholder) }}
-{% elif field.type == "BooleanField" %}
-    <label class="control-label" for="{{ field.id }}">{{ field.label }}</label> {{ field() }}
 {% else %}
 <div class="form-group gfu-form-row {{ "has-error" if field.errors else ""}} ">
-    <label class="control-label font-weight-bold" for="{{ field.id }}"> {{ field.label }}</label>
-    <div class="col-md-4 col-lg-3">
+    <label class="control-label col-lg-2" for="{{ field.id }}"> {{ field.label }}</label>
+    <div class="col-lg-3">
 
         {% if 'percentage' in class %}
             <div class="input-group">
@@ -23,13 +21,11 @@
                 {{ field(class_=class) }}
             {% endif %}
         {% elif field.type == "RadioField" %}
-            {% for i in field %}
-                <div class="row">
+            {% for i in  field %}
                 <label>
                     {{i}}
                     {{i.label}}
                 </label>
-                </div>
             {% endfor %}
         {% elif field.type == "SelectMultipleField" %}
             {# Specify a maximum height for a multiple-select field list. #}

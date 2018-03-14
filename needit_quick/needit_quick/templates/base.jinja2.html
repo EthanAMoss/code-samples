@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}Form Test{% endblock %}</title>
+        <title>{% block title %}Need It Quick!{% endblock %}</title>
 
 {% import 'macros.jinja2.html' as macros %}
 
@@ -25,6 +25,31 @@
     <body class="{{body_class}}">
 
     {% block body %}
+
+        {% block header %}
+        <nav class="navbar navbar-expand-xs fixed-top navbar-light bg-light">
+            <div class="container-fluid">
+                <!-- Brand line and mobile nav toggle -->
+                <div class="navbar-left">
+                    {% block back_button %} <button type="button" class="btn btn-link"><span> </span>{% endblock %}
+                </div> <!-- /.navbar-header -->
+                <div class="navbar-center">
+                    <div class="navbar-text">{{ self.title() }}</div>
+                </div>
+                <div class="navbar-right">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="btn btn-light" href="#" id=="dropdownBOIZ" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-bars"></span></a>          
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelby="dropdownBOIZ">
+                                <a class="dropdown-item" href="{{ url_for('home_page') }}">Home</a>
+                            </div>              
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav> <!-- /.navbar -->
+
+        {% endblock %}
 
         <div class="container main_body">
 
