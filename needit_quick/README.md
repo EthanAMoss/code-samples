@@ -20,7 +20,7 @@ Requires [Docker](https://www.docker.com/)
 
 ```bash
 # Build the container
-$ docker build -t needit:latest
+$ docker build -t needit:latest .
 
 # Run the container (access on localhost:5000 in your browser)
 $ docker run -it -p 5000:5000 needit:latest
