@@ -1,0 +1,29 @@
+{
+    "suspects": [
+        "missscarlet",
+        "mrgreen",
+        "mrswhite",
+        "professorplum",
+        "mrspeacock",
+        "colonelmustard"
+    ],
+    "weapons": [
+        "rope",
+        "leadpipe",
+        "wrench",
+        "candlestick",
+        "knife",
+        "revolver"
+    ],
+    "rooms": [
+        "hall",
+        "study",
+        "library",
+        "billiardroom",
+        "conservatory",
+        "ballroom",
+        "kitchen",
+        "diningroom",
+        "lounge"
+    ]
+}
